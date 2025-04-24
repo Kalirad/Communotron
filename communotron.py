@@ -478,7 +478,6 @@ class Community(object):
             new_positions = deepcopy(self.positions)
             to_remove = set()
             dauer_exit = {}
-            #self.killed_worms = {}
             for i in range(1, self.max_steps):
                 active_entities = [idx for idx in movers_idx if (idx not in to_remove)]
                 if len(active_entities) == 0:
@@ -520,8 +519,7 @@ class Community(object):
             temp = [i[0] for i in list(dauer_exit.values())]
             for i in ['A', 'B', 'C']:
                 self.migrants_cum[i] += temp.count(i)
-            self.migrants.append(dauer_exit)
-            #self.killed.append(killed_worms)
+            self.migrants.append(dauer_exit) 
             if to_remove:
                 self.positions = np.delete(self.positions, list(to_remove), axis=0)
                 self.strains = np.delete(self.strains, list(to_remove))
@@ -548,14 +546,14 @@ class Community(object):
         """
         self.initialize_history()
         for _ in range(time):
-            self.reproduce()
             self.random_walk()
+            self.reproduce()
             self.update_dev_state()
             self.update_mf_state()
+            self.update_survival()
             self.remove_old_fec()
             self.update_history()
             self.increase_age()
-            self.update_survival()
             self.increase_time()
 
 
