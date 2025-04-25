@@ -24,7 +24,7 @@ def eco_dynamic(directory, EnA, EnB, EnC, grid_size, pPred, mStep, period, Tsim,
     decline_rate = 0.3  # Rate of decline
     comm = Community(grid_size, source_center, source_diameter, decline_rate, resource_cycle=period, pred_par_b=pPred, time_lim=Tlim)
     mf_probs = {'A': 1.0, 'B': 0.0, 'C': 0.0}
-    if equal_dauer_exit:
+    if not equal_dauer_exit:
         dev_pars = {'A': {0: 48, 1:72, 4:72, 5:24}, 'B':{0: 48, 1:96, 4:96, 5:24}, 'C':{0: 48, 1:120, 4:24, 5:24}}
     else:
         dev_pars = {'A': {0: 48, 1:72, 4:24, 5:24}, 'B':{0: 48, 1:96, 4:24, 5:24}, 'C':{0: 48, 1:120, 4:24, 5:24}}
