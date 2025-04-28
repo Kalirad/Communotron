@@ -1,8 +1,8 @@
 """
 Module: communotron
-Description: This module defines the Community class and its methods for simulating population dynamics.
+Description: A software for simulating community dynamics with an agent-based framework.
 Author: Ata Kalirad
-Version: 1.0
+Version: 1.1.0
 Date: 20.01.2025
 """
 
@@ -12,10 +12,12 @@ import pandas as pd
 from copy import deepcopy
 import shortuuid
 
+from tqdm import tqdm
+
 
 class Community(object):
 
-    def __init__(self, grid_size, source_center, source_diameter, decline_rate, resource_cycle=0, pred_par_a = 0.01, pred_par_b = 0.1, delta=75, time_lim=300, resource_lim=0.4):
+    def __init__(self, grid_size, source_center, source_diameter, decline_rate, resource_cycle=0, pred_par_a = 0.01, pred_par_b = 0.005, delta=75, time_lim=300, resource_lim=0.4):
         """
         Initializes the class with the given parameters.
             grid_size (int): The size of the grid.
@@ -24,7 +26,7 @@ class Community(object):
             decline_rate (float): The rate at which the resource declines.
             resource_cycle (int, optional): The cycle of the resource. Defaults to 0.
             pred_par_a (float, optional): Parameter 'a' for the predator model. Defaults to 0.01.
-            pred_par_b (float, optional): Parameter 'b' for the predator model. Defaults to 0.1.
+            pred_par_b (float, optional): Parameter 'b' for the predator model. Defaults to 0.005.
             delta (int, optional): The delta value for the model. Defaults to 75.
             time_lim (int, optional): The time limit for the simulation. Defaults to 300.
             resource_lim (float, optional): The resource limit. Defaults to 0.4.
@@ -539,22 +541,23 @@ class Community(object):
         """
         self.history.to_csv(directory + 'output' + shortuuid.uuid() + '.csv')
 
-    def simulate(self, time):
+    def simulate(self, time, progress_bar=True):
         """
         Simulates the model.
             time (int): The time. 
+            progress_bar (bool, optional): Whether the progress bar is shown. Defaults to True. 
         """
         self.initialize_history()
-        for _ in range(time):
+        for _ in tqdm(range(time), colour='Magenta', disable= not progress_bar):
             self.random_walk()
             self.reproduce()
             self.update_dev_state()
             self.update_mf_state()
             self.update_survival()
             self.remove_old_fec()
-            self.update_history()
             self.increase_age()
             self.increase_time()
+            self.update_history()
 
 
 
